@@ -20,10 +20,8 @@ public class Player : Agent
     }
 
     private void FixedUpdate() {
-        GameObject enemy = GameObject.FindWithTag("Enemy");
-        Rigidbody enemyBody = enemy.GetComponent<Rigidbody>();
-        if (enemy != null){
-            if ((enemyBody.position).x < -15){
+        if (environment != null){
+            if (environment.GetPosition()){
                 Debug.Log("Success");
                 AddReward(1f);
                 EndEpisode();
@@ -56,7 +54,7 @@ public class Player : Agent
 
         if (Input.GetKey(KeyCode.UpArrow)) // Moving fwd
         {
-            continuousActionsOut[0] = 2f;
+            continuousActionsOut[0] = 1f;
         }
     }
 
