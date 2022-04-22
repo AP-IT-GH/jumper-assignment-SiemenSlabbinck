@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody body;
 
     private void Start() {
-        randomizeSpeed = speed * Random.Range(.5f, 1.5f);
+        randomizeSpeed = speed * Random.Range(1f, 1.5f);
         body = GetComponent<Rigidbody>();
     }
 

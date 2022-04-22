@@ -7,8 +7,9 @@ using Unity.MLAgents.Actuators;
 
 public class Player : Agent
 {
-    public float jumpSpeed = 50;
+    public float jumpSpeed = 10;
 
+    private bool onGround;
     private Rigidbody body;
     private Environment environment;
 
@@ -18,19 +19,35 @@ public class Player : Agent
         environment = GetComponentInParent<Environment>();
     }
 
-    public override void OnEpisodeBegin(){
-        Debug.Log("OnEpisodeBegin");
-        transform.localPosition = new Vector3(0f, 1.5f, 0f);
-        transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+    private void FixedUpdate() {
+        GameObject enemy = GameObject.FindWithTag("Enemy");
+        Rigidbody enemyBody = enemy.GetComponent<Rigidbody>();
+        if (enemy != null){
+            if ((enemyBody.position).x < -15){
+                Debug.Log("Success");
+                AddReward(1f);
+                EndEpisode();
+            }
+        }
 
-        body.angularVelocity = Vector3.zero;
-        body.velocity = Vector3.zero;
-        
-        environment.SpawnEnemy();
+        if (transform.localPosition.y < 0){
+            AddReward(-1f);
+            EndEpisode();
+        }
     }
 
     public override void CollectObservations(VectorSensor sensor){
+        sensor.AddObservation(onGround);
+    }
+
+    public override void OnEpisodeBegin(){
+        //transform.localPosition = new Vector3(-6f, 1.5f, 0f);
+        //transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+
+        //body.angularVelocity = Vector3.zero;
+        //body.velocity = Vector3.zero;
         
+        environment.SpawnEnemy();
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -45,16 +62,12 @@ public class Player : Agent
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        if (actionBuffers.ContinuousActions[0] == 0)
-        {
-            AddReward(-0.001f);
-            return;
-        }
-
         if (actionBuffers.ContinuousActions[0] != 0)
         {
-            Vector3 translation = transform.forward * jumpSpeed * (actionBuffers.ContinuousActions[0] * 2 - 3) * Time.deltaTime;
-            transform.Translate(translation, Space.World);
+            if (onGround == true){
+                body.velocity = new Vector3(0,jumpSpeed,0);
+                onGround = false;
+            }
         }
     }
 
@@ -62,9 +75,12 @@ public class Player : Agent
     {
         if (collision.transform.CompareTag("Enemy"))
         {
-            AddReward(1f);
+            Debug.Log("Collision");
+            AddReward(-1f);
             Destroy(collision.gameObject);
             EndEpisode();
+        } else if (collision.transform.CompareTag("Floor")){
+            onGround = true;
         }
     }
 }
