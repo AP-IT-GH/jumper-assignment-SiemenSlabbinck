@@ -1,16 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Environment : MonoBehaviour
 {
     public Enemy enemyPrefab;
     public GameObject newEnemy;
+    public Player player;
+    public Text scoreBoard;
 
     private Rigidbody body;
 
     List<GameObject> enemyList = new List<GameObject>();
 
+    private void FixedUpdate()
+    {
+        scoreBoard.text = player.GetCumulativeReward().ToString("f2");
+    }  
 
     public void SpawnEnemy(){
         ClearEnvironment();
@@ -30,12 +37,15 @@ public class Environment : MonoBehaviour
     }
 
     public bool GetPosition(){
-        Vector3 pos = newEnemy.transform.localPosition;
-        int posx = (int)pos.x;
-        if (posx < -15){
+        Vector3 posEnemy = newEnemy.transform.localPosition;
+        Vector3 posPlayer = player.transform.localPosition;
+        int posxEnemy = (int)posEnemy.x;
+        int posxPlayer = (int)posPlayer.x;
+        if (posxEnemy < posxPlayer){
             return true;
         } else {
             return false;
         }
+
     }
 }

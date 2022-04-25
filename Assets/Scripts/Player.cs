@@ -9,7 +9,7 @@ public class Player : Agent
 {
     public float jumpSpeed = 10;
 
-    private bool onGround;
+    private bool onGround; 
     private Rigidbody body;
     private Environment environment;
 
@@ -23,8 +23,11 @@ public class Player : Agent
         if (environment != null){
             if (environment.GetPosition()){
                 Debug.Log("Success");
-                AddReward(1f);
-                EndEpisode();
+                AddReward(0.5f);
+                if (GetCumulativeReward() >= 1f){
+                    EndEpisode();
+                }
+                spawn();
             }
         }
 
@@ -45,7 +48,7 @@ public class Player : Agent
         //body.angularVelocity = Vector3.zero;
         //body.velocity = Vector3.zero;
         
-        environment.SpawnEnemy();
+        spawn();
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -60,11 +63,12 @@ public class Player : Agent
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        if (actionBuffers.ContinuousActions[0] != 0)
+        if (actionBuffers.ContinuousActions[0] == 1)
         {
             if (onGround == true){
                 body.velocity = new Vector3(0,jumpSpeed,0);
                 onGround = false;
+                AddReward(-0.1f);
             }
         }
     }
@@ -80,5 +84,9 @@ public class Player : Agent
         } else if (collision.transform.CompareTag("Floor")){
             onGround = true;
         }
+    }
+
+    public void spawn(){
+        environment.SpawnEnemy();
     }
 }
