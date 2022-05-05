@@ -28,6 +28,9 @@ De player heeft volgend Rigidbody component:
 ![2022-05-05-19-40-26-image](https://user-images.githubusercontent.com/25724406/166982052-2a10fd19-5996-462f-a063-52457c2dc726.png)
 
 
+![image](https://user-images.githubusercontent.com/25724406/166982246-30298786-cc7e-4968-a14d-64e2e219b6bf.png)
+environment
+![image](https://user-images.githubusercontent.com/25724406/166982320-8bd37089-8660-4900-8b60-4ea5dbc8ccc3.png)
 
 
 
