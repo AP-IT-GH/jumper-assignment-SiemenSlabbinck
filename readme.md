@@ -2,7 +2,7 @@
 
 # Jumper oefening
 
-<img title="" src="file:///C:/Users/sieme/OneDrive/Documents/GitHub/jumper-assignment-SiemenSlabbinck/images/2022-05-05-19-32-38-image.png" alt="2022-05-05-19-32-38-image.png" data-align="left">
+![2022-05-05-19-32-38-image](https://user-images.githubusercontent.com/25724406/166981997-a98e401e-1015-4e2e-9bd1-44da9312d10f.png)
 
 ## Inleiding
 
@@ -10,9 +10,7 @@ De speler staat in het midden van een kruispunt, langs beide kanten komen auto's
 
 ## Hierarchy
 
-![2022-05-05-19-34-50-image.png](C:\Users\sieme\OneDrive\Documents\GitHub\jumper-assignment-SiemenSlabbinck\images\2022-05-05-19-34-50-image.png)
-
-
+![2022-05-05-19-34-50-image](https://user-images.githubusercontent.com/25724406/166982013-71097f76-4442-4ba1-a62f-5cf6a85ad7d6.png)
 
 In het GameObject Environment hebben volgende objecten
 
@@ -27,8 +25,8 @@ In het GameObject Environment hebben volgende objecten
 ### Player
 
 De player heeft volgend Rigidbody component:
+![2022-05-05-19-40-26-image](https://user-images.githubusercontent.com/25724406/166982052-2a10fd19-5996-462f-a063-52457c2dc726.png)
 
-![2022-05-05-19-40-26-image.png](C:\Users\sieme\OneDrive\Documents\GitHub\jumper-assignment-SiemenSlabbinck\images\2022-05-05-19-40-26-image.png)
 
 
 
