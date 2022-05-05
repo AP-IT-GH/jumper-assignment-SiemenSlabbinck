@@ -9,53 +9,33 @@ public class Player : Agent
 {
     public float jumpSpeed = 10;
 
-    private bool onGround; 
+    private bool onGround;
     private Rigidbody body;
-    private Environment environment;
 
     public override void Initialize(){
         base.Initialize();
         body = GetComponent<Rigidbody>();
-        environment = GetComponentInParent<Environment>();
+        onGround = true;
     }
 
     private void FixedUpdate() {
-        if (environment != null){
-            if (environment.GetPosition()){
-                Debug.Log("Success");
-                AddReward(0.5f);
-                if (GetCumulativeReward() >= 1f){
-                    EndEpisode();
-                }
-                spawn();
-            }
+        if (GameObject.FindWithTag("Car") == null){
+            AddReward(0.5f);
+            Debug.Log("Success");
         }
 
-        if (transform.localPosition.y < 0){
-            AddReward(-1f);
-            EndEpisode();
-        }
-    }
-
-    public override void CollectObservations(VectorSensor sensor){
-        sensor.AddObservation(onGround);
     }
 
     public override void OnEpisodeBegin(){
-        //transform.localPosition = new Vector3(-6f, 1.5f, 0f);
-        //transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-
-        //body.angularVelocity = Vector3.zero;
-        //body.velocity = Vector3.zero;
-        
-        spawn();
+        transform.localPosition = new Vector3(0, 1.8f, 0);
+        body.velocity = new Vector3(0,0,0);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         var continuousActionsOut = actionsOut.ContinuousActions;
 
-        if (Input.GetKey(KeyCode.UpArrow)) // Moving fwd
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             continuousActionsOut[0] = 1f;
         }
@@ -65,28 +45,23 @@ public class Player : Agent
     {
         if (actionBuffers.ContinuousActions[0] == 1)
         {
+            AddReward(-0.2f);
             if (onGround == true){
                 body.velocity = new Vector3(0,jumpSpeed,0);
                 onGround = false;
-                AddReward(-0.1f);
             }
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Enemy"))
-        {
-            Debug.Log("Collision");
-            AddReward(-1f);
+        if (collision.gameObject.CompareTag("Road")){
+            onGround = true;
+        } else if (collision.gameObject.CompareTag("Car")){
+            AddReward(-1.0f);
+            Debug.Log("Fail");
             Destroy(collision.gameObject);
             EndEpisode();
-        } else if (collision.transform.CompareTag("Floor")){
-            onGround = true;
         }
-    }
-
-    public void spawn(){
-        environment.SpawnEnemy();
     }
 }

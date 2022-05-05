@@ -1,51 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Environment : MonoBehaviour
 {
-    public Enemy enemyPrefab;
-    public GameObject newEnemy;
+    public Car carPrefab;
     public Player player;
-    public Text scoreBoard;
 
-    private Rigidbody body;
-
-    List<GameObject> enemyList = new List<GameObject>();
-
-    private void FixedUpdate()
-    {
-        scoreBoard.text = player.GetCumulativeReward().ToString("f2");
-    }  
-
-    public void SpawnEnemy(){
-        ClearEnvironment();
-        newEnemy = Instantiate(enemyPrefab.gameObject);
-        newEnemy.transform.parent = this.transform;
-        newEnemy.transform.localPosition = new Vector3(8, 1.8f, 0);
-
-        enemyList.Add(newEnemy);
-    }
-
-    private void ClearEnvironment(){
-        foreach (GameObject enemy in enemyList)
+    private void FixedUpdate() {
+        if (GameObject.FindWithTag("Car") == null)
         {
-            Destroy(enemy);
+            //Spawn new car
+            Car newCar = Instantiate(carPrefab);
+            newCar.transform.parent = this.transform;
+            int rnd = Random.Range(0, 2);
+            if (rnd == 0){
+                newCar.transform.localPosition = new Vector3(22.18f, 1.52f, 0);
+                newCar.direction = new Vector3((Random.Range(-15f, -10f)) * Time.deltaTime,0,0);
+            } else {
+                newCar.transform.localPosition = new Vector3(0, 1.52f, 22.18f);
+                newCar.transform.localRotation = Quaternion.Euler(0, -90, 0);
+                newCar.direction = new Vector3(0,0,(Random.Range(-15f, -10f)) * Time.deltaTime);
+            }
         }
-        enemyList.Clear();
-    }
-
-    public bool GetPosition(){
-        Vector3 posEnemy = newEnemy.transform.localPosition;
-        Vector3 posPlayer = player.transform.localPosition;
-        int posxEnemy = (int)posEnemy.x;
-        int posxPlayer = (int)posPlayer.x;
-        if (posxEnemy < posxPlayer){
-            return true;
-        } else {
-            return false;
-        }
-
     }
 }
