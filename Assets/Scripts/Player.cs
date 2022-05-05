@@ -20,7 +20,8 @@ public class Player : Agent
 
     private void FixedUpdate() {
         if (GameObject.FindWithTag("Car") == null){
-            AddReward(0.5f);
+            AddReward(1f);
+            EndEpisode();
             Debug.Log("Success");
         }
 
@@ -45,7 +46,7 @@ public class Player : Agent
     {
         if (actionBuffers.ContinuousActions[0] == 1)
         {
-            AddReward(-0.2f);
+            //AddReward(-0.2f);
             if (onGround == true){
                 body.velocity = new Vector3(0,jumpSpeed,0);
                 onGround = false;
